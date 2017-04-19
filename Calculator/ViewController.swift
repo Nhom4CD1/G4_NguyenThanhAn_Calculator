@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     //Định dạng(kiểu mẫu) của toán hạng nhập vào
     let numberPattern : String = "[-]?(\\d*)(\\.(\\d*))?"
     // Kiểm tra trạng thái nút nhấn là Toán hạng hay toán tử
+    @IBOutlet weak var btnReset: UIButton!
     var isToanHangClick : Bool = false;
     var isToanTuClick : Bool = false;
     
@@ -29,6 +30,7 @@ class ViewController: UIViewController {
     var ToanHangA : Double = 0
     var ToanHangB : Double = 0
     var chooseToanHangA : Bool = true
+    var zeroflag : Bool = false;
     
     enum enumPHEPTOAN {
         case NONE
@@ -42,14 +44,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        //self.btn_Reset_onClick()
+        //self.btn_Reset_onClick (self)
+       // self.btn_Reset_onClick(btnReset)
     }
-    
     //1. Hàm thực thi khi nhấn button Reset(AC)
     @IBAction func btn_Reset_onClick(_ sender: UIButton) {
         
         btn_TruyenButton(sender) ;
         lbToanHang.text = "" ;
         lbKQ.text = "" ;
+        zeroflag = false;
         
         ToanHangA = 0;
         ToanHangB = 0;
@@ -186,9 +191,13 @@ class ViewController: UIViewController {
     
     // 4 Hàm trả về giá trị cho operandA và đưa KQ ra màn hình
     func CalculatingAction(_ action : enumPHEPTOAN){
-        
         ToanHangA = CalculatingNumber(action, a: ToanHangA, b: ToanHangB)
-        lbKQ.text = String(ToanHangA)
+        if(zeroflag) {
+            //gọi hàm Reset
+          self.btn_Reset_onClick(btnReset)
+            lbKQ.text = ""
+        }
+        else { lbKQ.text = String(ToanHangA) }
     }
     
     //5. Hàm tính toán giữa hai toán hạng (hai số) double number
@@ -200,7 +209,12 @@ class ViewController: UIViewController {
             return a * b
             
         case enumPHEPTOAN.PHEPCHIA:
-            return a / b
+            if(b==0) {
+                zeroflag = true// phất cờ chia 0
+                alert(message: "Không thể chia cho 0!", title: "Div Zero")
+                return 0
+            }
+            else { return (a / b) }
             
         case enumPHEPTOAN.PHEPCONG:
             return a + b

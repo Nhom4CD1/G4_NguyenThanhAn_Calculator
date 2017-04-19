@@ -307,6 +307,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnReset" destination="ua5-DF-3gJ" id="ALJ-Tr-kw2"/>
                         <outlet property="lbKQ" destination="KcL-9d-hRK" id="ODp-3v-m20"/>
                         <outlet property="lbToanHang" destination="F3y-sl-fTo" id="ed3-R4-NGK"/>
                     </connections>
